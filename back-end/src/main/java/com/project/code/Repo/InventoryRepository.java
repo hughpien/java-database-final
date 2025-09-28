@@ -1,5 +1,6 @@
 package com.project.code.Repo;
 
+import org.java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -18,7 +19,6 @@ public interface InventoryRepository extends JpaRepository<Inventory, Long> {
     //      - Parameters: Long productId, Long storeId
         
     // Example: public Inventory findByProductIdandStoreId(Long productId, Long storeId);
-    @Query
     public Inventory findByProductIdandStoreId(Long productId, Long storeId);
 
     //    - **findByStore_Id**:
@@ -27,7 +27,6 @@ public interface InventoryRepository extends JpaRepository<Inventory, Long> {
     //      - Parameter: Long storeId
         
     // Example: public List<Inventory> findByStore_Id(Long storeId);
-    @Query
     public List<Inventory> findByStore_Id(Long storeId);
 
     //    - **deleteByProductId**:
