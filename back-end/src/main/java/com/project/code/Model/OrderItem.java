@@ -28,7 +28,7 @@ public class OrderItem {
     //    - Use @ManyToOne with @JoinColumn(name = "order_id") to define the foreign key relationship.
     //    - Apply @JsonManagedReference to manage bidirectional relationships and JSON serialization.
     @ManyToOne
-    @JoinColumn(name = order_id)
+    @JoinColumn(name = "order_id")
     @JsonManagedReference
     private OrderDetails order;
 
@@ -38,7 +38,7 @@ public class OrderItem {
     //    - Use @ManyToOne with @JoinColumn(name = "product_id") to define the foreign key relationship.
     //    - Apply @JsonManagedReference to prevent circular references during JSON serialization.
     @ManyToOne
-    @JoinColumn(name = product_id)
+    @JoinColumn(name = "product_id")
     @JsonManagedReference
     private Product product;
 
@@ -79,11 +79,11 @@ public class OrderItem {
         this.id = id;
     }
 
-    public LonOrderg getOrder() {
+    public OrderDetails getOrder() {
         return this.order;
     }
 
-    public void setOrder(Order order) {
+    public void setOrder(OrderDetails order) {
         this.order = order;
     }
 
@@ -95,11 +95,11 @@ public class OrderItem {
         this.product = product;
     }
 
-    public Ieteger getQuantity() {
+    public Integer getQuantity() {
         return this.quantity;
     }
 
-    public void setQuantity(Ieteger quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 

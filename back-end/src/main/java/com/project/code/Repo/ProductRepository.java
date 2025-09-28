@@ -4,10 +4,11 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.jpa.repository.Query.Param;
+import org.springframework.data.repository.query.Param;
+import com.project.code.Model.Product;
 
 @Repository
-public interface ProductRepository extends JpaReposiry<Product, Long> {
+public interface ProductRepository extends JpaRepository<Product, Long> {
     // 1. Add the repository interface:
     //    - Extend JpaRepository<Product, Long> to inherit basic CRUD functionality.
     //    - This allows the repository to perform operations like save, delete, update, and find without having to implement these methods manually.

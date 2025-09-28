@@ -2,6 +2,7 @@ package com.project.code.Model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import jakarta.validation.constraints.NotNull;
 
 @Document(collection = "reviews")
 public class Review {
@@ -89,11 +90,11 @@ public class Review {
         this.storeId = storeId;
     }
 
-    public Ingeter getRating() {
+    public Integer getRating() {
         return this.rating;
     }
 
-    public void setRating(Ingeter rating) {
+    public void setRating(Integer rating) {
         this.rating = rating;
     }
 

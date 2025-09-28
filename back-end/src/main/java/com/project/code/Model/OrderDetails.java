@@ -9,6 +9,9 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.FetchType;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 public class OrderDetails {
@@ -121,7 +124,7 @@ public class OrderDetails {
         this.date = date;
     }
 
-    public List<orderItem> getOrderItems() {
+    public List<OrderItem> getOrderItems() {
         return this.orderItems;
     }
 
