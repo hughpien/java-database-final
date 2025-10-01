@@ -12,6 +12,11 @@ public class ServiceClass {
     private ProductRepository productRepository;
     private InventoryRepository inventoryRepository;
 
+    public ServiceClass(ProductRepository productRepository, InventoryRepository inventoryRepository) {
+        this.productRepository = productRepository;
+        this.inventoryRepository = inventoryRepository;
+    }
+
     // 1. **validateInventory Method**:
     // - Checks if an inventory record exists for a given product and store
     // combination.

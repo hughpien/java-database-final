@@ -13,7 +13,6 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.util.List;
 
 @Entity
-@Table(name = "Customer")
 public class Customer {
     // 1. Add 'id' field:
     // - Type: private long

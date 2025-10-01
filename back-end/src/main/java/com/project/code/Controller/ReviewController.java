@@ -49,8 +49,7 @@ public class ReviewController {
     @GetMapping("/{storeId}/{productId}")
     public Map<String, Object> getReviews(@PathVariable Long storeId, @PathVariable Long productId) {
         Map<String, Object> response = new HashMap<>();
-        try
-        {
+        try {
             List<Review> reviews = reviewRepository.findByStoreIdAndProductId(storeId, productId);
             List<Map<String, Object>> filteredReviews = new ArrayList<>();
 
@@ -59,28 +58,34 @@ public class ReviewController {
                 filteredReview.put("comment", review.getComment());
                 filteredReview.put("rating", review.getRating());
 
-                customerRepository.findById(review.getCustomerId()).ifPresentOrElse
-                (
-                    customer -> 
-                    {
-                        filteredReview.put("customerName", customer.getName());
-                    }, 
-                    () -> 
-                    {
-                        filteredReview.put("customerName", "Unknown");
-                    }
-                );
+                customerRepository.findById(review.getCustomerId()).ifPresentOrElse(
+                        customer -> {
+                            filteredReview.put("customerName", customer.getName());
+                        },
+                        () -> {
+                            filteredReview.put("customerName", "Unknown");
+                        });
 
                 filteredReviews.add(filteredReview);
             }
 
             response.put("reviews", filteredReviews);
             return response;
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             response.put("error", "Error: " + e);
             return response;
         }
+    }
+
+    @GetMapping
+    public Map<String, Object> getAllReviews() {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            List<Review> reviews = reviewRepository.findAll();
+            response.put("reviews", reviews);
+        } catch (Exception e) {
+            response.put("error", "Error: " + e);
+        }
+        return response;
     }
 }

@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 
 @Document(collection = "reviews")
 public class Review {
-
+    
     // 1. Add 'customerId' field:
     //    - Type: private Long
     //    - This field represents the customer who created the review.
@@ -65,6 +65,14 @@ public class Review {
 
     // 10. Add Getters and Setters:
     //    - Add getter and setter methods for all fields (customerId, productId, storeId, rating, comment).
+
+    public String getId() {
+        return this.id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public Long getCustomerId() {
         return this.customerId;

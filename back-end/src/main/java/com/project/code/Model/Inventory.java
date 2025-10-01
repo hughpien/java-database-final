@@ -11,7 +11,6 @@ import jakarta.validation.constraints.Min;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
-@Table(name = "Inventory")
 public class Inventory {
     // 1. Add 'id' field:
     // - Type: private long
@@ -114,5 +113,14 @@ public class Inventory {
 
     public void setStockLevel(Integer stockLevel) {
         this.stockLevel = stockLevel;
+    }
+
+    public String toString() {
+        return "Inventory{" +
+                "id=" + id +
+                ", product=" + (product != null ? product.getId() : "null") +
+                ", store=" + (store != null ? store.getId() : "null") +
+                ", stockLevel=" + stockLevel +
+                '}';
     }
 }

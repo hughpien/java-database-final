@@ -31,7 +31,8 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
     // - Return type: List<Store>
     // - Parameter: String pname
     // - Use @Query annotation to write a custom query.
-    @Query("SELECT s.* FROM Store s WHERE s.name LIKE LOWER(CONCAT('%', :sname, '%'))")
-    public List<Store> findBySubName(@Param("sname") String sname);
+    @Query("SELECT s FROM Store s WHERE LOWER(s.name) LIKE LOWER(CONCAT('%', :sname, '%'))")
+    // public List<Store> findBySubName(@Param("sname") String sname);
+    public List<Store> findBySubName(String sname);
 
 }

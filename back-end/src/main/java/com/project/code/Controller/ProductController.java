@@ -11,6 +11,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 
 import com.project.code.Model.Product;
 import com.project.code.Repo.InventoryRepository;
+import com.project.code.Repo.OrderItemRepository;
 import com.project.code.Repo.ProductRepository;
 import com.project.code.Service.ServiceClass;
 
@@ -32,6 +33,9 @@ public class ProductController {
 
     @Autowired
     private InventoryRepository inventoryRepository;
+
+    @Autowired
+    private OrderItemRepository orderItemRepository;
 
     @Autowired
     private ServiceClass service;
@@ -74,11 +78,10 @@ public class ProductController {
         try {
             Product product = productRepository.findById(id).orElse(null);
             response.put("products", product);
-            return response;
         } catch (Exception e) {
             response.put("error", "DB error: " + e);
-            return response;
         }
+        return response;
     }
 
     // 5. Define the `updateProduct` Method:
@@ -93,11 +96,10 @@ public class ProductController {
         try {
             productRepository.save(product);
             response.put("message", "Product updated successfully");
-            return response;
         } catch (Exception e) {
             response.put("error", "DB error: " + e);
-            return response;
         }
+        return response;
     }
 
     // 6. Define the `filterbyCategoryProduct` Method:
@@ -113,14 +115,11 @@ public class ProductController {
         List<Product> products = new ArrayList<>();
         if (!category.equals("null") && !name.equals("null")) {
             products = productRepository.findProductBySubNameAndCategory(name, category);
-        } else if (!category.equals("null"))
-            if (!category.equals("null")) {
-                products = productRepository.findByCategory(category);
-            } else if (!name.equals("null")) {
-                products = productRepository.findProductBySubName(name);
-            } else {
-                response.put("products", null);
-            }
+        } else if (!category.equals("null")) {
+            products = productRepository.findByCategory(category);
+        } else if (!name.equals("null")) {
+            products = productRepository.findProductBySubName(name);
+        }
         response.put("products", products);
         return response;
     }
@@ -165,19 +164,15 @@ public class ProductController {
     public Map<String, String> deleteProduct(@PathVariable Long id) {
         Map<String, String> response = new HashMap<>();
         try {
-            if (service.ValidateProductId(id)) {
-                if (inventoryRepository.deleteByProductId(id) > 0) {
-                    productRepository.deleteById(id);
-                    System.out.println("Product with ID " + id + " deleted successfully.");
-                    response.put("message", "Product deleted successfully");
-                } else {
-                    System.out.println("Delete product in Inventory failed.");
-                    response.put("message", "Delete product in Inventory failed.");
-                }
-            } else {
+            if (!service.ValidateProductId(id)) {
                 System.out.println("Product with ID " + id + " does not exist.");
                 response.put("message", "Product with ID " + id + " does not exist.");
             }
+            inventoryRepository.deleteByProductId(id);
+            orderItemRepository.deleteByProductId(id);
+            productRepository.deleteById(id);
+            System.out.println("Product with ID " + id + " deleted successfully.");
+            response.put("message", "Product deleted successfully");
         } catch (Exception e) {
             System.out.println("DB error: " + e);
             response.put("error", "DB error: " + e);

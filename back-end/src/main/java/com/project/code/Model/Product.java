@@ -3,11 +3,10 @@ package com.project.code.Model;
 import java.util.List;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.UniqueConstraint;
@@ -16,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
-@Table(name = "Product", uniqueConstraints = @UniqueConstraint(columnNames = "sku"))
+@Table(name = "product", uniqueConstraints = @UniqueConstraint(columnNames = "sku"))
 public class Product {
 
     // 1. Add 'id' field:
@@ -70,7 +69,7 @@ public class Product {
     // relationship with Inventory.
     // - Use @JsonManagedReference("inventory-product") to manage bidirectional
     // relationships and avoid circular references.
-    @OneToMany(mappedBy = "Product")
+    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
     @JsonManagedReference("inventory-product")
     private List<Inventory> inventory;
 
@@ -119,5 +118,34 @@ public class Product {
 
     public void setSku(String sku) {
         this.sku = sku;
+    }
+
+    public List<Inventory> getInventory() {
+        return inventory;
+    }
+
+    public void setInventory(List<Inventory> inventory) {
+        this.inventory = inventory;
+    }
+
+    public Product() {
+
+    }
+
+    public Product(String name, String category, Double price, String sku) {
+        this.name = name;
+        this.category = category;
+        this.price = price;
+        this.sku = sku;
+    }
+
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", category='" + category + '\'' +
+                ", price=" + price +
+                ", sku='" + sku + '\'' +
+                '}';
     }
 }

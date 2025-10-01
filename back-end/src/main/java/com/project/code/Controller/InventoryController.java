@@ -56,7 +56,7 @@ public class InventoryController {
 
         if (inventory != null) {
             try {
-                Inventory inv = inventoryRepository.findById(inventory.getId()).orElse(null);
+                Inventory inv = service.getInventoryId(inventory);
                 if (inv != null) {
                     inventory.setId(inv.getId());
                     inventoryRepository.save(inventory);
@@ -86,14 +86,14 @@ public class InventoryController {
         Map<String, String> response = new HashMap<>();
 
         try
-        {
-            if (inventoryRepository.findByProductIdandStoreId(inventory.getProduct().getId(), inventory.getStore().getId()) != null) {
-                response.put("message", "Inventory already exists for the given product and store.");
+        {   
+            if (service.validateInventory(inventory)){
+                inventoryRepository.save(inventory);
+                response.put("message", "Inventory saved successfully   ");
             } 
             else 
             {
-                inventoryRepository.save(inventory);
-                response.put("message", "Inventory saved successfully");
+                response.put("message", "Inventory already exists for the given product and store.");
             }
         } catch (DataIntegrityViolationException e)
         {
@@ -131,7 +131,7 @@ public class InventoryController {
         List<Product> products = new ArrayList<>();
         if (category.equals("null") && name.equals("null"))
         {
-            products = productRepository.findProductsByStoreId(storeId);
+            products = productRepository.findByNameAndCategory(storeId, name, category);
         }
         else if (category.equals("null"))
         {
@@ -139,11 +139,7 @@ public class InventoryController {
         }
         else if (name.equals("null"))
         {
-            products = productRepository.findProductByCategory(storeId, category);
-        }
-        else
-        {
-            products = productRepository.findByNameAndCategory(storeId, name, category);
+            products = productRepository.findByCategoryAndStoreId(storeId, category);
         }
         response.put("product", products);
         return response;
@@ -185,7 +181,7 @@ public class InventoryController {
     //    - It checks the inventory for the product in the specified store and compares it to the requested quantity.
     //    - If sufficient stock is available, return `true`; otherwise, return `false`.
     @GetMapping("validate/{quantity}/{storeId}/{productId}")
-    public boolean validateQuantity(@PathVariable int quantity, @PathVariable Long storeId, @PathVariable Long productId)
+    public boolean validateQuantity(@PathVariable Integer quantity, @PathVariable Long storeId, @PathVariable Long productId)
     {
         Inventory inventory = inventoryRepository.findByProductIdandStoreId(productId, storeId);
         if (inventory != null && inventory.getStockLevel() >= quantity)
